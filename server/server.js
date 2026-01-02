@@ -1,7 +1,26 @@
 require('dotenv').config();
 const mongoose = require('mongoose');
-const app = require('./app');
-
+const cors = require('cors')
+const express = require('express')
+const PORT = process.env.PORT || 5000
+const { logger } = require('./middleware/logEvents')
+const errorHandler = require('./middleware/errorHandler')
+const cookieParser = require('cookie-parser')
+const app = express()
 //add database
+
+
+//middlewares
+app.use(logger) //custom middleware for logging events
+app.use(cors) //cors: implement whitelist later
+app.use(express.urlencoded({extended: false})) // form data
+app.use(express.json()) // json
+app.use(cookieParser()) // cookies (refresh token)
+//app.use(express.static(pathname)) : Change if you have static content to display
+
+//routes
+app.use('/register', require('./routes/register'))
+// JWT happens
+app.use('/login', require('./routes/login'))
 
 app.listen(5000, () => console.log("Server Running!"));
