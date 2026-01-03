@@ -1,5 +1,5 @@
 import { useState, useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import api from "../services/api";
 import { AuthContext } from "../context/AuthContext";
 import styles from "../styles/auth.module.css";
@@ -35,7 +35,7 @@ export default function Login() {
 
   return (
     <div className={styles.container}>
-      <form className={styles.card} onSubmit={(e) => handleSubmit(e)}>
+      <form className={styles.card} onSubmit={handleSubmit}>
         <h2>Login</h2>
 
         {error && <p className={styles.error}>{error}</p>}
@@ -59,6 +59,11 @@ export default function Login() {
         <button disabled={loading}>
           {loading ? "Logging in..." : "Login"}
         </button>
+
+        <p className={styles.switch}>
+          Don’t have an account?{" "}
+          <Link to="/register">Register here</Link>
+        </p>
       </form>
     </div>
   );
