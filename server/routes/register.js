@@ -3,3 +3,5 @@ const router = express.Router()
 const registerController = require('../controllers/registerController')
 
 router.post('/', registerController.handleRegistration)
+
+module.exports = router
