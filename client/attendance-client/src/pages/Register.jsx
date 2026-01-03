@@ -25,7 +25,7 @@ export default function Register(){
             console.log("Registration successful")
             navigate('/login')
 
-        } catch (error) {
+        } catch (err) {
             if (!err.response) {
                 setError("No server response")
             } else if (err.response.status === 409) {
@@ -71,12 +71,13 @@ export default function Register(){
             <button disabled={loading}>
             {loading ? "Registering..." : "Register"}
             </button>
-            </form>
             <p className={styles.switch}>
                 Already have an account?{" "}
                 <Link to="/login">Login</Link>
             </p>
 
+            </form>
+            
         </div>
     )
 }

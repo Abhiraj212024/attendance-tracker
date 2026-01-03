@@ -5,14 +5,17 @@ const express = require('express')
 const PORT = process.env.PORT || 5000
 const { logger } = require('./middleware/logEvents')
 const errorHandler = require('./middleware/errorHandler')
+const connectDB = require('./config/dbConn')
 const cookieParser = require('cookie-parser')
 const app = express()
-//add database
+const corsOptions = require('./config/corsOptions')
 
+//add database
+connectDB()
 
 //middlewares
 app.use(logger) //custom middleware for logging events
-app.use(cors) //cors: implement whitelist later
+app.use(cors(corsOptions)) //cors: implement whitelist later
 app.use(express.urlencoded({extended: false})) // form data
 app.use(express.json()) // json
 app.use(cookieParser()) // cookies (refresh token)
@@ -23,4 +26,9 @@ app.use('/register', require('./routes/register'))
 // JWT happens
 app.use('/login', require('./routes/login'))
 
-app.listen(5000, () => console.log("Server Running!"));
+app.use(errorHandler)
+
+mongoose.connection.once('open', () => {
+    console.log('Connected to MongoDB')
+    app.listen(PORT, () => {console.log(`Server running on Port ${PORT}`)})
+})
