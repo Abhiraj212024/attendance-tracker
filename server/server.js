@@ -15,7 +15,10 @@ connectDB()
 
 //middlewares
 app.use(logger) //custom middleware for logging events
-app.use(cors(corsOptions)) //cors: implement whitelist later
+// Enable CORS for all routes and origins
+// CORS MUST come before routes
+app.use(cors(corsOptions));
+
 app.use(express.urlencoded({extended: false})) // form data
 app.use(express.json()) // json
 app.use(cookieParser()) // cookies (refresh token)
