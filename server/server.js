@@ -9,22 +9,18 @@ const connectDB = require('./config/dbConn');
 const cookieParser = require('cookie-parser');
 const corsOptions = require('./config/corsOptions')
 const app = express();
+const { verifyJWT } = require('./middleware/verifyJWT')
 
 // Add database
 connectDB();
 
+app.use(logger)
 
 // CRITICAL: CORS must be the FIRST middleware - using simple config for development
 app.use(cors(corsOptions));
 app.options(/.*/, cors(corsOptions)); // preflight OPTIONS request for all routes
 
-// Test endpoint
-app.get('/test', (req, res) => {
-    res.json({ message: 'CORS is working!' });
-});
-
 // Other middlewares
-
 app.use(express.urlencoded({ extended: false })); // form data
 app.use(express.json()); // json
 
@@ -33,6 +29,8 @@ app.use(cookieParser()); // cookies (refresh token)
 // Routes
 app.use('/register', require('./routes/register'));
 app.use('/login', require('./routes/login'));
+app.use("/refresh", require('./routes/refresh'))
+
 
 app.use(errorHandler);
 
