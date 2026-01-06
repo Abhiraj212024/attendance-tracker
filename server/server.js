@@ -8,19 +8,33 @@ const errorHandler = require('./middleware/errorHandler');
 const connectDB = require('./config/dbConn');
 const cookieParser = require('cookie-parser');
 const app = express();
-const corsOptions = require('./config/corsOptions');
 
 // Add database
 connectDB();
 
-// CRITICAL: CORS must be the FIRST middleware
-app.use(cors(corsOptions));
+app.use(cookieParser()); // cookies (refresh token)
+
+// CRITICAL: CORS must be the FIRST middleware - using simple config for development
+app.use(cors({
+    origin: 'http://localhost:5173',
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    exposedHeaders: ['Set-Cookie'],
+    preflightContinue: false,
+    optionsSuccessStatus: 204
+}));
+
+// Test endpoint
+app.get('/test', (req, res) => {
+    res.json({ message: 'CORS is working!' });
+});
 
 // Other middlewares
-app.use(logger); // custom middleware for logging events
+
 app.use(express.urlencoded({ extended: false })); // form data
 app.use(express.json()); // json
-app.use(cookieParser()); // cookies (refresh token)
+
 
 // Routes
 app.use('/register', require('./routes/register'));
