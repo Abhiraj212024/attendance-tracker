@@ -5,7 +5,7 @@ const fs = require('fs')
 const fsPromises = require('fs').promises
 
 const logEvents = async (message, logName) => {
-    const dateTime = `${format(new Date(), 'yyyyMMDD\tHH:mm:ss')}`
+    const dateTime = `${format(new Date(), 'yyyyMMdd\tHH:mm:ss')}`
     const logItem = `${dateTime}\t${uuid()}\t${message}`
 
     try {
