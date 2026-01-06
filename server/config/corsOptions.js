@@ -1,26 +1,24 @@
 const whiteList = [
-    'https://www.google.com',
-    'http://localhost:5173/',
+    'https://google.com',
+    'http://localhost:5173',
     'http://127.0.0.1:5173'
 ];
 
 const corsOptions = {
     origin: (origin, callback) => {
-        // Allow requests with no origin (like mobile apps, Postman, curl)
-        if (!origin) {
-            return callback(null, true);
-        }
-        
-        if (whiteList.indexOf(origin) !== -1) {
+        if (!origin) return callback(null, true);
+
+        if (whiteList.includes(origin)) {
             callback(null, true);
         } else {
-            callback(new Error('Not allowed by CORS'));
+            console.log("Blocked by CORS:", origin);
+            callback(null, false); // IMPORTANT: false, not Error
         }
     },
     credentials: true,
-    optionsSuccessStatus: 200,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization']
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    optionsSuccessStatus: 204
 };
 
 module.exports = corsOptions;

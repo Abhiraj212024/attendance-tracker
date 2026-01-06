@@ -2,28 +2,21 @@ require('dotenv').config();
 const mongoose = require('mongoose');
 const cors = require('cors');
 const express = require('express');
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5001;
 const { logger } = require('./middleware/logEvents');
 const errorHandler = require('./middleware/errorHandler');
 const connectDB = require('./config/dbConn');
 const cookieParser = require('cookie-parser');
+const corsOptions = require('./config/corsOptions')
 const app = express();
 
 // Add database
 connectDB();
 
-app.use(cookieParser()); // cookies (refresh token)
 
 // CRITICAL: CORS must be the FIRST middleware - using simple config for development
-app.use(cors({
-    origin: 'http://localhost:5173',
-    credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
-    exposedHeaders: ['Set-Cookie'],
-    preflightContinue: false,
-    optionsSuccessStatus: 204
-}));
+app.use(cors(corsOptions));
+app.options(/.*/, cors(corsOptions)); // preflight OPTIONS request for all routes
 
 // Test endpoint
 app.get('/test', (req, res) => {
@@ -35,6 +28,7 @@ app.get('/test', (req, res) => {
 app.use(express.urlencoded({ extended: false })); // form data
 app.use(express.json()); // json
 
+app.use(cookieParser()); // cookies (refresh token)
 
 // Routes
 app.use('/register', require('./routes/register'));
