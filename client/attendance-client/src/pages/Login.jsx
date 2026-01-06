@@ -24,7 +24,7 @@ export default function Login() {
         password,
       });
 
-      login(res.data.token);
+      login(res.data.accessToken); // backend sends accessToken json along with cookie in login route
       navigate("/");
     } catch (err) {
       setError("Invalid email or password");
