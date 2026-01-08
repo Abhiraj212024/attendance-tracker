@@ -22,7 +22,17 @@ const handleLogin = async (req, res) => {
         })
 
         // password matched: create access and refresh token
-        const accessToken = jwt.sign({'email': foundUser.email}, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '10m' })
+        const accessToken = jwt.sign(
+                                {
+                                    UserInfo: {
+                                    id: foundUser._id,
+                                    email: foundUser.email
+                                    }
+                                },
+                                process.env.ACCESS_TOKEN_SECRET,
+                                { expiresIn: "10m" }
+                            )
+
         const refreshToken = jwt.sign({'email': foundUser.email}, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '1d' })
 
         // save the updated user to database

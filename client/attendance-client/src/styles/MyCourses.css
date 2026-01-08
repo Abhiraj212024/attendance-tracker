@@ -1,0 +1,135 @@
+/* Page wrapper */
+.mycourses-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2rem;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.mycourses-container h1 {
+  font-size: 2.2rem;
+  margin-bottom: 1rem;
+}
+
+/* Grid */
+.courses-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.2rem;
+  margin-bottom: 2.5rem;
+}
+
+/* Course card */
+.card {
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 1.2rem 1.4rem;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 28px rgba(0,0,0,0.12);
+}
+
+.card h3 {
+  margin-bottom: 0.6rem;
+  font-size: 1.1rem;
+}
+
+.card ul {
+  list-style: none;
+  padding: 0;
+  margin-bottom: 0.8rem;
+}
+
+.card li {
+  font-size: 0.9rem;
+  color: #444;
+  display: flex;
+  justify-content: space-between;
+}
+
+/* Card buttons */
+.card button {
+  margin-right: 0.4rem;
+  padding: 0.35rem 0.7rem;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+.card button:first-of-type {
+  background: #2563eb;
+  color: white;
+}
+
+.card button:last-of-type {
+  background: #dc2626;
+  color: white;
+}
+
+/* Form */
+.course-form {
+  background: #ffffff;
+  padding: 1.8rem;
+  border-radius: 18px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+  max-width: 520px;
+}
+
+.course-form h2 {
+  margin-bottom: 1rem;
+}
+
+.course-form input {
+  width: 100%;
+  padding: 0.55rem;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  margin-bottom: 0.8rem;
+  font-size: 0.95rem;
+}
+
+.course-form input:focus {
+  outline: none;
+  border-color: #2563eb;
+}
+
+.schedule-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.6rem;
+  margin-bottom: 1rem;
+}
+
+.schedule-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.9rem;
+}
+
+.schedule-item input {
+  width: 70px;
+  text-align: center;
+  margin: 0;
+}
+
+/* Submit button */
+.course-form button {
+  width: 100%;
+  padding: 0.65rem;
+  border-radius: 12px;
+  border: none;
+  background: #16a34a;
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.course-form button:hover {
+  background: #15803d;
+}

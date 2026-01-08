@@ -32,6 +32,9 @@ app.use('/login', require('./routes/login'));
 app.use("/refresh", require('./routes/refresh'))
 app.use("/logout", require('./routes/logout'))
 
+app.use(verifyJWT)
+
+app.use('/courses', require('./routes/courses'))
 
 app.use(errorHandler);
 

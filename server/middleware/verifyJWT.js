@@ -19,7 +19,7 @@ const verifyJWT = (req, res, next) => {
                 console.log(err)
                 return res.sendStatus(403) //invalid token
             }
-            req.user = decoded
+            req.user = decoded.UserInfo.id
             next()
         }
     )

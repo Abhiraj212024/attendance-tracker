@@ -13,7 +13,7 @@ export function AuthProvider({ children }) {
 
   const logout = async () => {
     setToken(null);
-    await api.post('/logout') // implement later
+    await api.post('/logout')
   };
 
   useEffect(() => {
