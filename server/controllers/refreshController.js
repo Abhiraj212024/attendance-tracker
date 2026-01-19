@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken')
 const User = require('../models/User')
+const { userInfo } = require('node:os')
 
 const handleRefresh = async (req, res) => {
     //read cookie jwt
@@ -29,7 +30,12 @@ const handleRefresh = async (req, res) => {
                 }
                 //generate new access token
                 const accessToken = jwt.sign(
-                    {'email': foundUser.email},
+                    {
+                        UserInfo: {
+                            id: foundUser._id,
+                            email: foundUser.email
+                        }
+                    },
                     process.env.ACCESS_TOKEN_SECRET,
                     {'expiresIn': '10m'}
                 )

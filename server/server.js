@@ -9,7 +9,7 @@ const connectDB = require('./config/dbConn');
 const cookieParser = require('cookie-parser');
 const corsOptions = require('./config/corsOptions')
 const app = express();
-const { verifyJWT } = require('./middleware/verifyJWT')
+const verifyJWT = require('./middleware/verifyJWT')
 
 // Add database
 connectDB();

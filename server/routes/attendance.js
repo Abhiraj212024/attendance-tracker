@@ -3,8 +3,9 @@ const router = express.Router()
 const attendanceController = require('../controllers/attendanceController')
 
 router.get('/', attendanceController.getAttendanceRange)
+router.post('/:date/rebuild', attendanceController.rebuildAttendanceDay)
 router.get('/:date', attendanceController.getAttendanceDate)
-router.post('/', attendanceController.postAttendance)
 router.put('/:date', attendanceController.putAttendanceDate)
+router.post('/', attendanceController.postAttendance)
 
 module.exports = router
