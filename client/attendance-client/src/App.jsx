@@ -4,6 +4,7 @@ import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
 import MyCourses from "./pages/MyCourses";
+import AttendanceCalendar from "./pages/AttendanceCalendar";
 
 export default function App() {
   return (
@@ -12,6 +13,7 @@ export default function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path='/courses' element={<MyCourses />} />
+        <Route path='/attendance' element={<AttendanceCalendar />}/>
 
         <Route
           path="/"

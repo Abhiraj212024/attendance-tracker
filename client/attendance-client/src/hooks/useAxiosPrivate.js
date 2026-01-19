@@ -3,13 +3,13 @@ import { AuthContext } from "../context/AuthContext";
 import axiosPrivate from "../services/axiosPrivate";
 
 export default function useAxiosPrivate() {
-  const { accessToken, setAccessToken } = useContext(AuthContext);
+  const { token, setToken } = useContext(AuthContext);
 
   useEffect(() => {
     const requestIntercept = axiosPrivate.interceptors.request.use(
       (config) => {
-        if (!config.headers["Authorization"] && accessToken) {
-          config.headers["Authorization"] = `Bearer ${accessToken}`;
+        if (!config.headers.Authorization && token) {
+          config.headers.Authorization = `Bearer ${token}`;
         }
         return config;
       },
@@ -25,9 +25,9 @@ export default function useAxiosPrivate() {
           prevRequest.sent = true;
 
           const res = await axiosPrivate.post("/refresh");
-          setAccessToken(res.data.accessToken);
+          setToken(res.data.accessToken);
 
-          prevRequest.headers["Authorization"] =
+          prevRequest.headers.Authorization =
             `Bearer ${res.data.accessToken}`;
 
           return axiosPrivate(prevRequest);
@@ -41,7 +41,7 @@ export default function useAxiosPrivate() {
       axiosPrivate.interceptors.request.eject(requestIntercept);
       axiosPrivate.interceptors.response.eject(responseIntercept);
     };
-  }, [accessToken, setAccessToken]);
+  }, [token, setToken]);
 
   return axiosPrivate;
 }

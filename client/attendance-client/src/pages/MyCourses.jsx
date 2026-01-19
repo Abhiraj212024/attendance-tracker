@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import useaxiosPrivate from '../services/useAxiosPrivate'
+import useaxiosPrivate from '../hooks/useAxiosPrivate'
 import CourseCard from '../components/CourseCard'
 import '../styles/MyCourses.css'
 
