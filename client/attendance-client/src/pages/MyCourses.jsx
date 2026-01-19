@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import useaxiosPrivate from '../hooks/useAxiosPrivate'
 import CourseCard from '../components/CourseCard'
 import '../styles/MyCourses.css'
+import Navbar from '../components/Navbar'
 
 export default function MyCourses(){
     const [courses, setCourses] = useState([])
@@ -104,60 +105,63 @@ export default function MyCourses(){
     )
 
     return (
-        <div className="mycourses-container">
-            <h1>My Courses</h1>
-            
-            {courses.length === 0 && <p>No Courses Found</p>}
+        <>
+            <Navbar />
+            <div className="mycourses-container">
+                <h1>My Courses</h1>
+                
+                {courses.length === 0 && <p>No Courses Found</p>}
 
-            <div className="courses-grid">
-                {courses.map(course => (
-                    <CourseCard 
-                    key={course._id}
-                    course={course}
-                    onEdit={handleEdit}
-                    onDelete={handleDelete}
-                    />
-                ))}
-            </div>
-
-            
-            <form onSubmit={handleSubmit} className="course-form">
-                <h2>Add Course</h2>
-                <input 
-                    type="text" 
-                    name="code"
-                    placeholder="Course Code"
-                    value={formData.code}
-                    onChange={handleChange}
-                    required
-                />
-
-                <input 
-                    type="text" 
-                    name="name"
-                    placeholder="Course Name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    required
-                />
-            
-                <div className='schedule-grid'>
-                    {Object.keys(emptySchedule).map((day) => (
-                        <div key={day} className="schedule-item">
-                            <label>{day}</label>
-                            <input 
-                                type="number"
-                                min="0"
-                                value={formData.schedule[day]}
-                                onChange={(e) => handleScheduleChange(e, day)}
-                            />
-                        </div>
+                <div className="courses-grid">
+                    {courses.map(course => (
+                        <CourseCard 
+                        key={course._id}
+                        course={course}
+                        onEdit={handleEdit}
+                        onDelete={handleDelete}
+                        />
                     ))}
                 </div>
 
-                <button type="submit">Add Course</button>
-            </form>
-            
-        </div>
+                
+                <form onSubmit={handleSubmit} className="course-form">
+                    <h2>Add Course</h2>
+                    <input 
+                        type="text" 
+                        name="code"
+                        placeholder="Course Code"
+                        value={formData.code}
+                        onChange={handleChange}
+                        required
+                    />
+
+                    <input 
+                        type="text" 
+                        name="name"
+                        placeholder="Course Name"
+                        value={formData.name}
+                        onChange={handleChange}
+                        required
+                    />
+                
+                    <div className='schedule-grid'>
+                        {Object.keys(emptySchedule).map((day) => (
+                            <div key={day} className="schedule-item">
+                                <label>{day}</label>
+                                <input 
+                                    type="number"
+                                    min="0"
+                                    value={formData.schedule[day]}
+                                    onChange={(e) => handleScheduleChange(e, day)}
+                                />
+                            </div>
+                        ))}
+                    </div>
+
+                    <button type="submit">Add Course</button>
+                </form>
+                
+            </div>
+        </>
     )
 }

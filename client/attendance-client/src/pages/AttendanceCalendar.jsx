@@ -4,6 +4,7 @@ import DayEditor from "../components/calendar/DayEditor";
 import "../styles/AttendanceCalendar.css";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import { toLocalISO } from "../utils/date";
+import Navbar from "../components/Navbar";
 
 export default function AttendanceCalendar() {
   const axiosPrivate = useAxiosPrivate();
@@ -157,28 +158,32 @@ const dirty = useMemo(() => {
   }
 
   return (
-    <div className="calendar-page">
-      {error && <div className="error-banner">{error}</div>} {/* NEW: Error display */}
+    <>
+      <Navbar />
       
-      <CalendarPanel
-        selectedDate={selectedDate}
-        onSelect={handleDateSelect}
-        semester={semester}
-        monthData={monthData}
-        onMonthChange={fetchMonth}
-      />
+      <div className="calendar-page">
+        {error && <div className="error-banner">{error}</div>} {/* NEW: Error display */}
+        
+        <CalendarPanel
+          selectedDate={selectedDate}
+          onSelect={handleDateSelect}
+          semester={semester}
+          monthData={monthData}
+          onMonthChange={fetchMonth}
+        />
 
-      <DayEditor
-        selectedDate={selectedDate}
-        dayData={dayData}
-        setDayData={setDayData}
-        loading={loading}
-        saving={saving} // NEW: Pass saving state
-        dirty={dirty} // NEW: Pass dirty state
-        onSave={saveDay}
-        onOverrideChange={(overrideDay) => rebuildDay(selectedDate, overrideDay)}
-        onHolidayChange={toggleHoliday}
-      />
-    </div>
+        <DayEditor
+          selectedDate={selectedDate}
+          dayData={dayData}
+          setDayData={setDayData}
+          loading={loading}
+          saving={saving} // NEW: Pass saving state
+          dirty={dirty} // NEW: Pass dirty state
+          onSave={saveDay}
+          onOverrideChange={(overrideDay) => rebuildDay(selectedDate, overrideDay)}
+          onHolidayChange={toggleHoliday}
+        />
+      </div>
+    </>
   );
 }
