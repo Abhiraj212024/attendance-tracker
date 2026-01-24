@@ -41,7 +41,10 @@ export default function Register(){
     return (
         <div className={styles.container}>
             <form className={styles.card} onSubmit={handleSubmit}>
-                <h2>Register</h2>
+                <h1>Register</h1>
+                <p className={styles.tagline}>
+                Start tracking your academic attendance in one place.
+                </p>
                 {error && <p className={styles.error}>{error}</p>}
 
             <input

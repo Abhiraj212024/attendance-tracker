@@ -36,7 +36,10 @@ export default function Login() {
   return (
     <div className={styles.container}>
       <form className={styles.card} onSubmit={handleSubmit}>
-        <h2>Login</h2>
+        <h1>Login</h1>
+        <p className={styles.tagline}>
+          Track, manage, and visualize your academic attendance.
+        </p>
 
         {error && <p className={styles.error}>{error}</p>}
 
