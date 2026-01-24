@@ -291,12 +291,7 @@ const getDashboardMetrics = async (req, res) => {
   }
 
   try {
-    /* -----------------------
-       LOAD BASE DATA
-    ----------------------- */
-
     const courses = await Course.find({ user: req.user }).lean();
-
     const attendanceDays = await AttendanceDay.find({
       user: req.user,
       date: { $gte: startNormalized, $lte: endNormalized }
@@ -304,10 +299,6 @@ const getDashboardMetrics = async (req, res) => {
 
     const attendanceMap = new Map();
     attendanceDays.forEach(d => attendanceMap.set(d.date, d));
-
-    /* -----------------------
-       INIT METRICS
-    ----------------------- */
 
     const metrics = {};
     courses.forEach(course => {
@@ -324,15 +315,23 @@ const getDashboardMetrics = async (req, res) => {
       };
     });
 
-    /* -----------------------
-       WALK EACH DAY
-    ----------------------- */
+    // Get today as YYYY-MM-DD string (server's local time)
+    const now = new Date();
+    const todayStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+    
+    console.log('\n=== DASHBOARD DEBUG ===');
+    console.log('Today:', todayStr);
+    console.log('Semester:', startNormalized, 'to', endNormalized);
+    console.log('Stored days:', attendanceDays.length);
+    console.log('Stored dates:', attendanceDays.map(d => d.date).sort());
+    console.log('======================\n');
 
-    let cur = new Date(startNormalized + "T00:00:00");
-    const endDate = new Date(endNormalized + "T00:00:00");
+    // FIX: Parse the normalized date strings directly to ensure correct start
+    let cur = new Date(startNormalized + "T12:00:00"); // Use noon to avoid timezone issues
+    const endDate = new Date(endNormalized + "T12:00:00");
 
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
+    let debugDayCount = 0;
+    const debugDays = [];
 
     while (cur <= endDate) {
       const iso = cur.toISOString().split("T")[0];
@@ -346,7 +345,23 @@ const getDashboardMetrics = async (req, res) => {
         appliedDay = stored.overrideDay || appliedDay;
       }
 
-      const isFuture = cur > today;
+      // ✅ FIX: Compare date strings - future is AFTER today
+      const isFuture = iso > todayStr;
+
+      // Debug first course for first 20 days
+      if (debugDayCount < 20 && courses.length > 0) {
+        const firstCourse = courses[0];
+        const scheduled = firstCourse.schedule[appliedDay] || 0;
+        debugDays.push({
+          date: iso,
+          day: appliedDay,
+          stored: !!stored,
+          isFuture,
+          scheduled,
+          isHoliday
+        });
+        debugDayCount++;
+      }
 
       if (!isHoliday) {
         for (const course of courses) {
@@ -355,73 +370,53 @@ const getDashboardMetrics = async (req, res) => {
 
           if (scheduled <= 0) continue;
 
-          /* -------- MAX POSSIBLE (includes future) -------- */
+          // Always add to max (includes future potential)
           metrics[cid].maxTotal += scheduled;
           metrics[cid].maxAttended += scheduled;
 
-          /* -------- SKIP FUTURE DAYS for current metrics -------- */
-          if (isFuture) continue;
-
-          /* -------- HANDLE PAST/TODAY -------- */
-
           if (stored && stored.records) {
-            // ✅ Day exists in DB - check for this course's record
+            // Day exists in DB - use actual data
             const rec = stored.records.find(r => {
               if (!r.course || !r.course._id) return false;
               return r.course._id.toString() === cid;
             });
 
             if (rec) {
-              // Record exists for this course
+              // Found a record for this course
               if (rec.status === "cancelled") {
+                // Cancelled - remove from totals
                 metrics[cid].maxTotal -= rec.count;
                 metrics[cid].maxAttended -= rec.count;
                 metrics[cid].cancelled += rec.count;
-                continue;
+              } else {
+                // Attended or Missed - count toward current
+                metrics[cid].total += rec.count;
+                if (rec.status === "attended") {
+                  metrics[cid].attended += rec.count;
+                } else if (rec.status === "missed") {
+                  metrics[cid].missed += rec.count;
+                }
               }
-
-              metrics[cid].total += rec.count;
-
-              if (rec.status === "attended") {
-                metrics[cid].attended += rec.count;
-              } else if (rec.status === "missed") {
-                metrics[cid].missed += rec.count;
-              }
-
             } else {
-              // ✅ No record for this course on a stored day
-              // Day was edited but this course wasn't scheduled (due to override)
+              // Course not in records (overridden out) - remove from max
               metrics[cid].maxTotal -= scheduled;
               metrics[cid].maxAttended -= scheduled;
             }
-
-          } else {
-            // ❌ CRITICAL: Day doesn't exist in DB
-            // This is a past day that was never explicitly saved
-            // 
-            // DEFAULT BEHAVIOR: Assume attended
-            // 
-            // BUT this causes the 100% problem!
-            // 
-            // Better approach: Auto-populate this day's attendance
-            // by treating it as if it was attended (but flagged as "unverified")
-            
+          } else if (!isFuture) {
+            // ✅ CRITICAL: Past/today, not in DB → assume fully attended
             metrics[cid].total += scheduled;
             metrics[cid].attended += scheduled;
           }
+          // ✅ Future days: already counted in max, don't count in current
         }
       }
 
       cur = addDays(cur, 1);
     }
 
-    /* -----------------------
-       FORMAT OUTPUT
-    ----------------------- */
-
     const output = Object.values(metrics).map(c => {
-      const currentPct = c.total === 0 ? 0 : ((c.total - c.missed) / c.total) * 100;
-      const maxPct = c.maxTotal === 0 ? 0 : ((c.maxTotal - c.missed) / c.maxTotal) * 100;
+      const currentPct = c.total === 0 ? 0 : (c.attended / c.total) * 100;
+      const maxPct = c.maxTotal === 0 ? 0 : ((c.maxAttended - c.missed) / c.maxTotal) * 100;
 
       return {
         courseId: c.courseId,
@@ -438,14 +433,18 @@ const getDashboardMetrics = async (req, res) => {
       };
     });
 
+    console.log('Sample output:', output[0]);
+    console.log('\n=== DAY-BY-DAY DEBUG (CS2030) ===');
+    console.table(debugDays);
+    console.log('==================================\n');
+
     res.json({ courses: output });
 
   } catch (e) {
-    console.error(e);
+    console.error('Dashboard error:', e);
     res.sendStatus(500);
   }
 };
-
 module.exports = {
   getAttendanceDate,
   postAttendance,

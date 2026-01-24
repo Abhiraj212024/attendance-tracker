@@ -37,6 +37,7 @@ app.use(verifyJWT)
 app.use('/semester', require('./routes/semester'))
 app.use('/courses', require('./routes/courses'))
 app.use('/attendance', require('./routes/attendance'))
+app.use('/debug', require('./routes/debug'))
 
 
 app.use(errorHandler);
