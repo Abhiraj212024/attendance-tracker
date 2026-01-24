@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import useaxiosPrivate from '../hooks/useAxiosPrivate'
+import useAxiosPrivate from '../hooks/useAxiosPrivate'
 import CourseCard from '../components/CourseCard'
 import '../styles/MyCourses.css'
 import Navbar from '../components/Navbar'
@@ -7,7 +7,7 @@ import Navbar from '../components/Navbar'
 export default function MyCourses(){
     const [courses, setCourses] = useState([])
     const [loading, setLoading] = useState(true)
-    const axiosPrivate = useaxiosPrivate()
+    const axiosPrivate = useAxiosPrivate()
     const emptySchedule = {
         monday: 0, tuesday: 0, wednesday: 0, thursday: 0, friday: 0, saturday: 0, sunday: 0
     }
@@ -16,6 +16,8 @@ export default function MyCourses(){
         name: "",
         schedule: emptySchedule
     })
+    const [editingId, setEditingId] = useState(null) // Track which course is being edited
+
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -34,47 +36,79 @@ export default function MyCourses(){
     const handleSubmit = async (e) => {
         e.preventDefault()
 
-        try {
-            const res = await axiosPrivate.post('/courses', formData)
+        if (editingId) {
+            // We're editing, call handleEdit instead
+            await handleEditSubmit()
+        } else {
+            // We're adding new
+            try {
+                const res = await axiosPrivate.post('/courses', formData)
 
-            //instantly update UI
-            setCourses(prev => [...prev, res.data])
+                //instantly update UI
+                setCourses(prev => [...prev, res.data])
 
-            //reset form state
-            setFormData({
-                code: "",
-                name: "",
-                schedule: emptySchedule
-            })
-        } catch (error) {
-            console.error(error)
+                //reset form state
+                setFormData({
+                    code: "",
+                    name: "",
+                    schedule: emptySchedule
+                })
+            } catch (error) {
+                console.error(error)
+            }
         }
     }
 
-    const handleEdit = async (id) => {
-        try {
-            const res = await axiosPrivate.put(`/courses/${id}`, formData)
+    const handleEdit = (id) => {
+        // Pre-fill the form with course data
+        const course = courses.find(c => c._id === id)
+        if (course) {
+            setFormData({
+                code: course.code,
+                name: course.name,
+                schedule: course.schedule
+            })
+            setEditingId(id)
+        }
+    }
 
-            //instantaneouly update UI
+    const handleEditSubmit = async () => {
+        try {
+            const res = await axiosPrivate.put(`/courses/${editingId}`, formData)
+
+            //instantaneously update UI
             setCourses(prev =>
                 prev.map(course =>
-                    course._id === id ? res.data : course
+                    course._id === editingId ? res.data : course
                 )
             )
 
-
             //reset form state
             setFormData({
                 code: "",
                 name: "",
                 schedule: emptySchedule
             })
+            setEditingId(null)
         } catch (error) {
             console.error(error)
         }
     }
 
+    const cancelEdit = () => {
+        setFormData({
+            code: "",
+            name: "",
+            schedule: emptySchedule
+        })
+        setEditingId(null)
+    }
+
     const handleDelete = async (id) => {
+        if (!window.confirm("Are you sure? This will remove this course from all attendance records.")) {
+            return
+        }
+
         try {
             await axiosPrivate.delete(`/courses/${id}`)
             setCourses(prev => prev.filter((course) => course._id !== id))
@@ -85,12 +119,10 @@ export default function MyCourses(){
 
     // form helpers
     const handleChange = (e) => {
-        e.preventDefault()
         setFormData({...formData, [e.target.name] : e.target.value})
     }
 
     const handleScheduleChange = (e, day) => {
-        e.preventDefault()
         setFormData(prev => ({
             ...prev,
             schedule: {
@@ -125,7 +157,8 @@ export default function MyCourses(){
 
                 
                 <form onSubmit={handleSubmit} className="course-form">
-                    <h2>Add Course</h2>
+                    <h2>{editingId ? "Edit Course" : "Add Course"}</h2>
+                    
                     <input 
                         type="text" 
                         name="code"
@@ -158,7 +191,16 @@ export default function MyCourses(){
                         ))}
                     </div>
 
-                    <button type="submit">Add Course</button>
+                    <div style={{ display: 'flex', gap: '10px' }}>
+                        <button type="submit">
+                            {editingId ? "Update Course" : "Add Course"}
+                        </button>
+                        {editingId && (
+                            <button type="button" onClick={cancelEdit}>
+                                Cancel
+                            </button>
+                        )}
+                    </div>
                 </form>
                 
             </div>

@@ -1,4 +1,7 @@
 const Course = require('../models/Course')
+const AttendanceDay = require('../models/AttendanceDay')
+const { rebuildAllDays } = require("../services/attendanceRebuilder");
+
 
 const getCourses = async (req, res) => {
     try {
@@ -24,6 +27,8 @@ const createCourse = async (req, res) => {
             schedule: schedule
         })
 
+        await rebuildAllDays(req.user)
+
         res.status(201).json(newCourse)
     } catch (error) {
         console.error(error)
@@ -32,37 +37,39 @@ const createCourse = async (req, res) => {
 }
 
 const editCourse = async (req, res) => {
-    const id = req.params.id
-    const {code, name, schedule} = req.body
-    if(!code && !name && !schedule) return res.status(400).json({
-        'message': 'At least one field is required'
-    })
+  const id = req.params.id
+  const { code, name, schedule } = req.body
 
-    try {
-        foundCourse = await Course.findOne({ _id : id, user: req.user })
-        if(!foundCourse) return res.status(404).json({
-            'message': 'Course not found'
-        })
+  if (!code && !name && !schedule) {
+    return res.status(400).json({ message: 'At least one field is required' })
+  }
 
-        if(code) {
-            foundCourse.code = code
-        }
-        if(name) {
-            foundCourse.name = name
-        }
-        if(schedule) {
-            foundCourse.schedule = schedule
-        }
-
-        await foundCourse.save()
-
-        res.json(foundCourse)
-
-    } catch (error) {
-        console.error(error)
-        res.sendStatus(500)
+  try {
+    const foundCourse = await Course.findOne({ _id: id, user: req.user })
+    if (!foundCourse) {
+      return res.status(404).json({ message: 'Course not found' })
     }
+
+    if (code) foundCourse.code = code
+    if (name) foundCourse.name = name
+    if (schedule) foundCourse.schedule = schedule
+
+    // save first
+    await foundCourse.save()
+
+    // rebuild attendance from updated DB state
+    if (schedule) {
+      await rebuildAllDays(req.user)
+    }
+
+    res.json(foundCourse)
+
+  } catch (error) {
+    console.error(error)
+    res.sendStatus(500)
+  }
 }
+
 
 const deleteCourse = async (req, res) => {
     const id = req.params.id
@@ -71,13 +78,19 @@ const deleteCourse = async (req, res) => {
     })
 
     try {
-        await Course.deleteOne({ _id: id })
+        // FIX: Remove this course from all attendance records
+        await AttendanceDay.updateMany(
+            { user: req.user },
+            { $pull: { records: { course: id } } }
+        )
+
+        await Course.deleteOne({ _id: id, user: req.user })
         res.sendStatus(204)
     } catch (error) {
         console.error(error)
         res.sendStatus(500)
     }
-
 }
+
 
 module.exports = { getCourses, createCourse, editCourse, deleteCourse }

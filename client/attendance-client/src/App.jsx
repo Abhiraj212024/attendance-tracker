@@ -5,25 +5,28 @@ import Dashboard from "./pages/Dashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
 import MyCourses from "./pages/MyCourses";
 import AttendanceCalendar from "./pages/AttendanceCalendar";
+import { AttendanceProvider } from "./context/AttendanceContext"; // NEW IMPORT
 
 export default function App() {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path='/courses' element={<MyCourses />} />
-        <Route path='/attendance' element={<AttendanceCalendar />}/>
+      <AttendanceProvider> {/* NEW: Wrap routes with provider */}
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path='/courses' element={<MyCourses />} />
+          <Route path='/attendance' element={<AttendanceCalendar />}/>
 
-        <Route
-          path="/"
-          element={
-            <ProtectedRoute>
-              <Dashboard />
-            </ProtectedRoute>
-          }
-        />
-      </Routes>
+          <Route
+            path="/"
+            element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            }
+          />
+        </Routes>
+      </AttendanceProvider> {/* NEW: Close provider */}
     </BrowserRouter>
   );
 }

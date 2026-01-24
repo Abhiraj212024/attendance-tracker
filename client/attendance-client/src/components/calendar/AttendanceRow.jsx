@@ -1,4 +1,5 @@
 export default function AttendanceRow({ record, onChange, disabled }) {
+  if(!record.course) return null
   return (
     <div className={`attendance-row ${disabled ? "disabled" : ""}`}>
       <span>

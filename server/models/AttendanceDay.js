@@ -15,12 +15,27 @@ const attendanceDaySchema = new mongoose.Schema({
 
   records: [
     {
-      course: { type: mongoose.Schema.Types.ObjectId, ref: "Course", required: true },
+      course: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Course",
+        required: true,
+        validate: {
+          validator: v => mongoose.Types.ObjectId.isValid(v),
+          message: "Invalid course reference"
+        }
+      },
       status: { type: String, enum: ["attended", "missed", "cancelled"], required: true },
       count: { type: Number, default: 1 }
     }
   ]
 });
+
+attendanceDaySchema.pre("save", async function () {
+  if (Array.isArray(this.records)) {
+    this.records = this.records.filter(r => r && r.course);
+  }
+});
+
 
 attendanceDaySchema.index({ user: 1, date: 1 }, { unique: true });
 

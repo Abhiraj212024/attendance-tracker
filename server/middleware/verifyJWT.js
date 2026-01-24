@@ -15,8 +15,6 @@ const verifyJWT = (req, res, next) => {
       return res.sendStatus(403);
     }
 
-    // 🔍 TEMP: log once to confirm payload
-    console.log("DECODED JWT:", decoded);
 
     // ✅ Pick the correct field
     const userId =

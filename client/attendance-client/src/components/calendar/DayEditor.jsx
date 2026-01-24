@@ -6,8 +6,8 @@ export default function DayEditor({
   dayData,
   setDayData,
   loading,
-  saving, // NEW: Accept saving prop
-  dirty, // NEW: Accept dirty prop
+  saving,
+  dirty,
   onSave,
   onOverrideChange,
   onHolidayChange
@@ -23,6 +23,18 @@ export default function DayEditor({
     );
   }
 
+  // ✅ FIX: Update record by course ID, not by index
+  const handleRecordChange = (courseId, updatedRecord) => {
+    setDayData(prev => ({
+      ...prev,
+      records: prev.records.map(rec => 
+        (rec.course?._id || rec.course) === courseId
+          ? updatedRecord
+          : rec
+      )
+    }));
+  };
+
   return (
     <div className="calendar-right">
       <h2>{selectedDate.toDateString()}</h2>
@@ -35,31 +47,31 @@ export default function DayEditor({
       />
 
       {dayData.isHoliday ? (
-        <p className="holiday-banner">Holiday — no classes</p>
+        <p className="holiday-banner">Holiday – no classes</p>
       ) : (
         <div className="records-list">
-          {dayData.records.map((rec, idx) => (
-            <AttendanceRow
-              key={rec.course._id || rec.course}
-              record={rec}
-              disabled={dayData.isHoliday} // NEW: Disable when holiday
-              onChange={(updated) => {
-                const copy = [...dayData.records];
-                copy[idx] = updated;
-                setDayData({ ...dayData, records: copy });
-              }}
-            />
-          ))}
+          {dayData.records
+            .filter(rec => rec.course)
+            .map((rec) => (
+              <AttendanceRow
+                key={rec.course._id}  // ✅ FIX: Use course ID as key, not index
+                record={rec}
+                disabled={dayData.isHoliday}
+                onChange={(updated) => {
+                  // ✅ FIX: Pass course ID instead of relying on index
+                  handleRecordChange(rec.course._id, updated);
+                }}
+              />
+            ))}
         </div>
       )}
 
       <button
         className="save-btn"
-        disabled={!dirty || saving} // FIXED: Use passed props
+        disabled={!dirty || saving}
         onClick={onSave}
       >
-        {saving ? "Saving..." : dirty ? "Save changes" : "Saved"} 
-        {/* NEW: Show saving state */}
+        {saving ? "Saving..." : dirty ? "Save changes" : "Saved"}
       </button>
     </div>
   );

@@ -34,8 +34,10 @@ app.use("/logout", require('./routes/logout'))
 
 app.use(verifyJWT)
 
+app.use('/semester', require('./routes/semester'))
 app.use('/courses', require('./routes/courses'))
 app.use('/attendance', require('./routes/attendance'))
+
 
 app.use(errorHandler);
 

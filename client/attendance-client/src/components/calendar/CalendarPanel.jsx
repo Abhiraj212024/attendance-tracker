@@ -18,6 +18,10 @@ export default function CalendarPanel({
         minDate={semester.start}
         maxDate={semester.end}
 
+        tileDisabled={({date}) => 
+          date < semester.start || date > semester.end
+        }
+
         onActiveStartDateChange={({ activeStartDate }) => {
           onMonthChange(activeStartDate);
           onSelect(activeStartDate);
