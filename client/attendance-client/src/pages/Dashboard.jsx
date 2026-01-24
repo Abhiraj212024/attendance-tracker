@@ -198,7 +198,7 @@ function CourseCard({ course }) {
         <div>
           <span className="metric-label">Max Possible Attendance Days</span>
           <span className="metric-value">
-            {course.maxAttended}
+            {(course.maxTotal - course.missed)}
           </span>
         </div>
 
