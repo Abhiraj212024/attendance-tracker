@@ -1,82 +1,195 @@
+/* ===== PAGE ===== */
+
 .dashboard-page {
-  padding: 20px;
+  min-height: 100vh;
+  padding: 2rem 3rem;
+  background: radial-gradient(circle at top, #0f172a, #020617 70%);
+  color: #e5e7eb;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
+.dashboard-page h1 {
+  font-size: 2.4rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  letter-spacing: 0.5px;
+}
+
+/* ===== SEMESTER ===== */
+
 .semester-section {
-  margin-top: 20px;
+  margin-bottom: 2.5rem;
 }
 
 .semester-card,
 .semester-summary {
-  background: #111;
-  border-radius: 12px;
-  padding: 16px;
+  background: linear-gradient(145deg, #020617, #020617);
+  border: 1px solid #1e293b;
+  border-radius: 16px;
+  padding: 1.5rem 2rem;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  max-width: 500px;
+  justify-content: space-between;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+  max-width: 520px;
 }
+
+.semester-summary h2 {
+  margin: 0;
+  font-size: 1.2rem;
+  color: #93c5fd;
+}
+
+.semester-summary p {
+  margin-top: 0.4rem;
+  font-size: 0.95rem;
+  color: #cbd5f5;
+}
+
+/* ===== FORMS ===== */
 
 .semester-form {
   display: flex;
-  gap: 12px;
+  gap: 1.5rem;
+  align-items: flex-end;
   flex-wrap: wrap;
 }
 
 .semester-form label {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  font-size: 0.75rem;
+  color: #94a3b8;
+  gap: 0.3rem;
 }
 
-.courses-section {
-  margin-top: 30px;
+.semester-form input {
+  background: #020617;
+  border: 1px solid #1e293b;
+  color: #e5e7eb;
+  border-radius: 8px;
+  padding: 0.45rem 0.6rem;
+  font-size: 0.85rem;
+}
+
+.semester-form input:focus {
+  outline: none;
+  border-color: #38bdf8;
+}
+
+/* ===== BUTTONS ===== */
+
+.dashboard-page button {
+  background: linear-gradient(135deg, #38bdf8, #06b6d4);
+  border: none;
+  border-radius: 999px;
+  padding: 0.5rem 1.1rem;
+  color: #020617;
+  font-weight: 600;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 0 0 rgba(56,189,248,0);
+}
+
+.dashboard-page button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 25px rgba(56,189,248,0.35);
+}
+
+.dashboard-page button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ===== COURSES GRID ===== */
+
+.courses-section h2 {
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+  font-weight: 600;
 }
 
 .course-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  gap: 16px;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.6rem;
 }
 
+/* ===== COURSE CARD ===== */
+
 .course-card {
-  background: #0d0d0d;
-  border-radius: 14px;
-  padding: 16px;
+  background: linear-gradient(165deg, #020617, #020617);
+  border: 1px solid #1e293b;
+  border-radius: 20px;
+  padding: 1.4rem 1.5rem;
+  box-shadow: 0 12px 35px rgba(0,0,0,0.6);
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  justify-content: space-between;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.course-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 18px 50px rgba(56,189,248,0.15);
+}
+
+.course-header h3 {
+  font-size: 1.3rem;
+  margin: 0;
+  color: #38bdf8;
 }
 
 .course-header p {
-  opacity: 0.7;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
+  margin-top: 0.2rem;
+  color: #94a3b8;
 }
 
+/* ===== METRICS ===== */
+
 .course-metrics {
+  margin-top: 1rem;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 10px;
+  gap: 0.7rem;
+}
+
+.course-metrics div {
+  background: #020617;
+  border: 1px solid #1e293b;
+  border-radius: 10px;
+  padding: 0.6rem 0.7rem;
 }
 
 .metric-label {
-  font-size: 0.8rem;
-  opacity: 0.7;
+  font-size: 0.6rem;
+  color: #64748b;
+  display: block;
 }
 
 .metric-value {
-  font-size: 1.1rem;
-  font-weight: bold;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #e5e7eb;
 }
 
+/* ===== PROGRESS BAR ===== */
+
 .progress-bar {
+  margin-top: 1rem;
   height: 8px;
-  background: #222;
-  border-radius: 8px;
+  width: 100%;
+  background: #020617;
+  border-radius: 999px;
   overflow: hidden;
+  border: 1px solid #1e293b;
 }
 
 .progress-fill {
   height: 100%;
-  background: linear-gradient(90deg, #00ff99, #00ccff);
+  background: linear-gradient(90deg, #22d3ee, #38bdf8, #4ade80);
+  border-radius: 999px;
+  transition: width 0.4s ease;
 }

@@ -1,135 +1,256 @@
-/* Page wrapper */
+/* ===== PAGE ===== */
+
 .mycourses-container {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 2rem;
+  min-height: 100vh;
+  padding: 2rem 3rem 4rem;
+  background: radial-gradient(circle at top, #0f172a, #020617 70%);
+  color: #e5e7eb;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 .mycourses-container h1 {
-  font-size: 2.2rem;
-  margin-bottom: 1rem;
+  font-size: 2.4rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  letter-spacing: 0.5px;
 }
 
-/* Grid */
+/* ===== COURSES GRID ===== */
+
 .courses-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 1.2rem;
-  margin-bottom: 2.5rem;
+  gap: 1.6rem;
+  margin-bottom: 3rem;
 }
 
-/* Course card */
-.card {
-  background: #ffffff;
-  border-radius: 14px;
-  padding: 1.2rem 1.4rem;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+/* ===== COURSE CARD (if CourseCard uses these) ===== */
+
+.course-card {
+  background: linear-gradient(165deg, #020617, #020617);
+  border: 1px solid #1e293b;
+  border-radius: 20px;
+  padding: 1.3rem 1.4rem;
+  box-shadow: 0 12px 35px rgba(0,0,0,0.6);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.card:hover {
+.course-card:hover {
   transform: translateY(-3px);
-  box-shadow: 0 10px 28px rgba(0,0,0,0.12);
+  box-shadow: 0 18px 50px rgba(56,189,248,0.15);
 }
 
-.card h3 {
-  margin-bottom: 0.6rem;
-  font-size: 1.1rem;
-}
+/* ===== FORM ===== */
 
-.card ul {
-  list-style: none;
-  padding: 0;
-  margin-bottom: 0.8rem;
-}
-
-.card li {
-  font-size: 0.9rem;
-  color: #444;
-  display: flex;
-  justify-content: space-between;
-}
-
-/* Card buttons */
-.card button {
-  margin-right: 0.4rem;
-  padding: 0.35rem 0.7rem;
-  border-radius: 8px;
-  border: none;
-  cursor: pointer;
-  font-size: 0.85rem;
-}
-
-.card button:first-of-type {
-  background: #2563eb;
-  color: white;
-}
-
-.card button:last-of-type {
-  background: #dc2626;
-  color: white;
-}
-
-/* Form */
 .course-form {
-  background: #ffffff;
-  padding: 1.8rem;
-  border-radius: 18px;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.08);
   max-width: 520px;
+  background: linear-gradient(165deg, #020617, #020617);
+  border: 1px solid #1e293b;
+  border-radius: 20px;
+  padding: 1.8rem 2rem 2rem;
+  box-shadow: 0 14px 45px rgba(0,0,0,0.65);
 }
 
 .course-form h2 {
-  margin-bottom: 1rem;
+  margin-bottom: 1.2rem;
+  font-size: 1.4rem;
+  color: #38bdf8;
 }
+
+/* ===== INPUTS ===== */
 
 .course-form input {
   width: 100%;
-  padding: 0.55rem;
+  background: #020617;
+  border: 1px solid #1e293b;
   border-radius: 10px;
-  border: 1px solid #ddd;
+  padding: 0.55rem 0.7rem;
   margin-bottom: 0.8rem;
-  font-size: 0.95rem;
+  color: #e5e7eb;
+  font-size: 0.85rem;
 }
 
 .course-form input:focus {
   outline: none;
-  border-color: #2563eb;
+  border-color: #38bdf8;
+  box-shadow: 0 0 0 1px rgba(56,189,248,0.4);
 }
+
+/* ===== SCHEDULE GRID ===== */
 
 .schedule-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 0.6rem;
-  margin-bottom: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+  gap: 0.7rem;
+  margin: 1rem 0 1.4rem;
 }
 
 .schedule-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 0.9rem;
+  background: #020617;
+  border: 1px solid #1e293b;
+  border-radius: 12px;
+  padding: 0.5rem 0.6rem;
+  text-align: center;
+}
+
+.schedule-item label {
+  display: block;
+  font-size: 0.6rem;
+  color: #94a3b8;
+  margin-bottom: 0.2rem;
+  text-transform: capitalize;
 }
 
 .schedule-item input {
-  width: 70px;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid #1e293b;
+  border-radius: 0;
+  padding: 0.2rem 0;
   text-align: center;
-  margin: 0;
+  font-size: 0.8rem;
 }
 
-/* Submit button */
+/* ===== BUTTONS ===== */
+
 .course-form button {
-  width: 100%;
-  padding: 0.65rem;
-  border-radius: 12px;
+  background: linear-gradient(135deg, #38bdf8, #06b6d4);
   border: none;
-  background: #16a34a;
-  color: white;
-  font-size: 1rem;
+  border-radius: 999px;
+  padding: 0.45rem 1.1rem;
+  color: #020617;
+  font-weight: 600;
+  font-size: 0.75rem;
   cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 0 0 rgba(56,189,248,0);
 }
 
 .course-form button:hover {
-  background: #15803d;
+  transform: translateY(-1px);
+  box-shadow: 0 10px 25px rgba(56,189,248,0.35);
+}
+
+.course-form button[type="button"] {
+  background: linear-gradient(135deg, #64748b, #334155);
+  color: #e5e7eb;
+}
+
+.course-form button[type="button"]:hover {
+  box-shadow: 0 10px 25px rgba(148,163,184,0.3);
+}
+
+/* ===== EMPTY TEXT ===== */
+
+.mycourses-container p {
+  color: #94a3b8;
+  font-size: 0.85rem;
+}
+
+/* ===== COURSE CARD ===== */
+
+.course-card {
+  background: linear-gradient(165deg, #020617, #020617);
+  border: 1px solid #1e293b;
+  border-radius: 20px;
+  padding: 1.3rem 1.4rem;
+  box-shadow: 0 12px 35px rgba(0,0,0,0.6);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.course-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 18px 50px rgba(56,189,248,0.15);
+}
+
+/* ===== HEADER ===== */
+
+.course-card-header h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  color: #38bdf8;
+  letter-spacing: 0.4px;
+}
+
+.course-card-header p {
+  margin: 0;
+  font-size: 0.75rem;
+  color: #94a3b8;
+}
+
+/* ===== SCHEDULE ===== */
+
+.course-schedule {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(55px, 1fr));
+  gap: 0.5rem;
+}
+
+.schedule-chip {
+  background: #020617;
+  border: 1px solid #1e293b;
+  border-radius: 10px;
+  padding: 0.35rem 0.4rem;
+  text-align: center;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.02);
+}
+
+.schedule-chip span {
+  display: block;
+  font-size: 0.55rem;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.schedule-chip b {
+  font-size: 0.8rem;
+  color: #e5e7eb;
+}
+
+/* ===== ACTIONS ===== */
+
+.course-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.6rem;
+  margin-top: 0.4rem;
+}
+
+.course-actions button {
+  flex: 1;
+  border: none;
+  border-radius: 999px;
+  padding: 0.4rem 0;
+  font-size: 0.7rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+/* edit */
+
+.edit-btn {
+  background: linear-gradient(135deg, #38bdf8, #06b6d4);
+  color: #020617;
+}
+
+.edit-btn:hover {
+  box-shadow: 0 8px 22px rgba(56,189,248,0.4);
+  transform: translateY(-1px);
+}
+
+/* delete */
+
+.delete-btn {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  color: #020617;
+}
+
+.delete-btn:hover {
+  box-shadow: 0 8px 22px rgba(239,68,68,0.4);
+  transform: translateY(-1px);
 }

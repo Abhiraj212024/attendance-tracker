@@ -1,0 +1,79 @@
+.navbar {
+  background: linear-gradient(180deg, #020617, #020617);
+  border-bottom: 1px solid #1e293b;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+/* ===== TOP BAR ===== */
+
+.navbar-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.9rem 1.5rem;
+}
+
+.navbar-brand {
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  color: #38bdf8;
+}
+
+/* ===== LINKS ===== */
+
+.navbar-links {
+  display: flex;
+  gap: 1.3rem;
+  padding: 0.4rem 1.5rem 0.8rem;
+}
+
+.navbar-links a {
+  color: #cbd5f5;
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 500;
+  position: relative;
+  transition: color 0.2s ease;
+}
+
+.navbar-links a:hover {
+  color: #38bdf8;
+}
+
+.navbar-links a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -6px;
+  height: 2px;
+  width: 0%;
+  background: linear-gradient(90deg, #38bdf8, #22d3ee);
+  transition: width 0.25s ease;
+}
+
+.navbar-links a:hover::after {
+  width: 100%;
+}
+
+/* ===== LOGOUT BUTTON ===== */
+
+.navbar-logout {
+  background: linear-gradient(135deg, #38bdf8, #06b6d4);
+  border: none;
+  border-radius: 999px;
+  padding: 0.35rem 0.9rem;
+  color: #020617;
+  font-weight: 600;
+  font-size: 0.7rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.navbar-logout:hover {
+  box-shadow: 0 8px 22px rgba(56,189,248,0.4);
+  transform: translateY(-1px);
+}

@@ -1,81 +1,307 @@
+/* ===== PAGE LAYOUT ===== */
+
 .calendar-page {
+  min-height: 100vh;
   display: grid;
   grid-template-columns: 360px 1fr;
-  gap: 2rem;
-  padding: 2rem;
-  max-width: 1200px;
-  margin: auto;
+  gap: 1.8rem;
+  padding: 1.6rem 2.2rem 3rem;
+  background: radial-gradient(circle at top, #0f172a, #020617 70%);
+  color: #e5e7eb;
 }
 
-.calendar-left,
-.calendar-right {
-  background: #fff;
-  padding: 1.5rem;
-  border-radius: 18px;
-  box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+/* ===== ERROR ===== */
+
+.error-banner {
+  grid-column: 1 / -1;
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  color: #020617;
+  padding: 0.6rem 1rem;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 0.8rem;
+  box-shadow: 0 10px 25px rgba(239,68,68,0.4);
 }
 
-.records-list {
-  margin-top: 1rem;
+/* ===== LEFT PANEL ===== */
+
+.calendar-left {
+  background: linear-gradient(165deg, #020617, #020617);
+  border: 1px solid #1e293b;
+  border-radius: 22px;
+  padding: 1.3rem 1.3rem 1.6rem;
+  box-shadow: 0 15px 45px rgba(0,0,0,0.65);
 }
 
-.attendance-row {
+.calendar-left h2 {
+  margin-bottom: 1rem;
+  font-size: 1.25rem;
+  color: #38bdf8;
+}
+
+
+/* =========================
+   REACT CALENDAR – CLEAN UI
+   ========================= */
+
+.react-calendar {
+  width: 100%;
+  background: transparent;
+  border: none;
+  color: #e5e7eb;
+  font-family: inherit;
+}
+
+/* ----- HEADER ----- */
+
+.react-calendar__navigation {
   display: flex;
-  justify-content: space-between;
-  padding: 0.6rem 0;
-  border-bottom: 1px solid #eee;
+  margin-bottom: 0.6rem;
 }
+
+.react-calendar__navigation button {
+  background: #020617;
+  border: 1px solid #1e293b;
+  border-radius: 12px;
+  color: #e5e7eb;
+  min-width: 36px;
+  padding: 0.4rem 0.6rem;
+  font-size: 0.8rem;
+  transition: all 0.2s ease;
+}
+
+.react-calendar__navigation button:hover {
+  background: #0f172a;
+  box-shadow: 0 0 0 1px rgba(56,189,248,0.25);
+}
+
+.react-calendar__navigation__label {
+  flex-grow: 1 !important;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+  color: #38bdf8;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* ----- WEEKDAYS ----- */
+
+.react-calendar__month-view__weekdays {
+  margin-bottom: 0.4rem;
+}
+
+.react-calendar__month-view__weekdays abbr {
+  text-decoration: none;
+  font-size: 0.65rem;
+  color: #94a3b8;
+  font-weight: 600;
+  letter-spacing: 0.6px;
+}
+
+/* ----- GRID ----- */
+
+.react-calendar__tile {
+  background: #020617;
+  border: 1px solid #1e293b;
+  border-radius: 12px;
+  height: 44px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #e5e7eb;
+  transition: all 0.15s ease;
+}
+
+.react-calendar__tile:enabled:hover {
+  background: #0f172a;
+  box-shadow: 0 0 0 1px rgba(56,189,248,0.25);
+  transform: translateY(-1px);
+}
+
+/* ----- DISABLED DAYS ----- */
+
+.react-calendar__tile:disabled {
+  background: transparent !important;
+  color: #334155 !important;
+  border: 1px dashed #0f172a;
+  opacity: 0.5;
+}
+
+/* ----- TODAY ----- */
+
+.react-calendar__tile--now {
+  background: rgba(56,189,248,0.12);
+  border: 1px solid rgba(56,189,248,0.4);
+  color: #38bdf8;
+}
+
+/* ----- SELECTED DAY ----- */
+
+.react-calendar__tile--active {
+  background: linear-gradient(135deg, #38bdf8, #06b6d4) !important;
+  color: #020617 !important;
+  border: none !important;
+  box-shadow: 0 10px 25px rgba(56,189,248,0.45);
+}
+
+/* ----- DAYS WITH DATA ----- */
+
+.tile-filled {
+  background: rgba(56,189,248,0.16) !important;
+  border: 1px solid rgba(56,189,248,0.5) !important;
+  color: #e5e7eb !important;
+}
+
+/* ----- HOLIDAYS ----- */
+
+.tile-holiday {
+  background: rgba(239,68,68,0.18) !important;
+  border: 1px solid rgba(239,68,68,0.6) !important;
+  color: #fecaca !important;
+}
+
+/* ----- NEIGHBOR MONTH DAYS ----- */
+
+.react-calendar__month-view__days__day--neighboringMonth {
+  color: #475569;
+  opacity: 0.4;
+}
+/* ===== RIGHT PANEL ===== */
+
+.calendar-right {
+  background: linear-gradient(165deg, #020617, #020617);
+  border: 1px solid #1e293b;
+  border-radius: 22px;
+  padding: 1.5rem 1.8rem 1.8rem;
+  box-shadow: 0 15px 45px rgba(0,0,0,0.65);
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+
+.calendar-right h2 {
+  font-size: 1.6rem;
+  color: #38bdf8;
+  margin-bottom: 0.2rem;
+}
+
+/* ===== DAY CONTROLS ===== */
 
 .day-controls {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 1rem;
+  align-items: center;
+  background: #020617;
+  border: 1px solid #1e293b;
+  border-radius: 14px;
+  padding: 0.7rem 0.9rem;
+  font-size: 0.7rem;
 }
 
-.save-btn {
-  margin-top: 1rem;
-  padding: 0.6rem;
-  width: 100%;
-  border-radius: 10px;
-  border: none;
-  background: #2563eb;
-  color: white;
+.day-controls label {
+  display: flex;
+  gap: 0.4rem;
+  align-items: center;
   cursor: pointer;
 }
 
-.tile-filled {
-  background: #dcfce7 !important;
-  border-radius: 8px;
+.day-controls select {
+  background: #020617;
+  border: 1px solid #1e293b;
+  border-radius: 10px;
+  padding: 0.25rem 0.4rem;
+  color: #e5e7eb;
+  font-size: 0.65rem;
 }
 
-.tile-holiday {
-  background: #fef3c7 !important;
-  border-radius: 8px;
+/* ===== HOLIDAY ===== */
+
+.holiday-banner {
+  background: linear-gradient(135deg, #f59e0b, #facc15);
+  color: #020617;
+  border-radius: 14px;
+  padding: 0.7rem 1rem;
+  font-weight: 700;
+  font-size: 0.85rem;
+  box-shadow: 0 10px 25px rgba(250,204,21,0.35);
 }
 
-/* Existing styles remain... Add these: */
+/* ===== RECORDS ===== */
 
-.error-banner {
-  background-color: #fee;
-  border: 1px solid #fcc;
-  color: #c33;
-  padding: 12px;
-  border-radius: 4px;
-  margin-bottom: 16px;
-  font-weight: 500;
+.records-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
 }
 
-.save-btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
+/* attendance row */
+
+.attendance-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #020617;
+  border: 1px solid #1e293b;
+  border-radius: 14px;
+  padding: 0.55rem 0.8rem;
+  font-size: 0.75rem;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.attendance-row:hover {
+  transform: translateX(2px);
+  box-shadow: 0 6px 18px rgba(56,189,248,0.12);
 }
 
 .attendance-row.disabled {
-  opacity: 0.6;
-  pointer-events: none;
+  opacity: 0.5;
 }
 
-.attendance-row.disabled select {
+.attendance-row span {
+  color: #e5e7eb;
+}
+
+.attendance-row select {
+  background: #020617;
+  border: 1px solid #1e293b;
+  border-radius: 10px;
+  padding: 0.25rem 0.4rem;
+  color: #38bdf8;
+  font-weight: 600;
+  font-size: 0.65rem;
+}
+
+/* ===== SAVE BUTTON ===== */
+
+.save-btn {
+  margin-top: auto;
+  align-self: flex-end;
+  background: linear-gradient(135deg, #38bdf8, #06b6d4);
+  border: none;
+  border-radius: 999px;
+  padding: 0.5rem 1.4rem;
+  color: #020617;
+  font-weight: 700;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 0 0 rgba(56,189,248,0);
+}
+
+.save-btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 28px rgba(56,189,248,0.45);
+}
+
+.save-btn:disabled {
+  opacity: 0.4;
   cursor: not-allowed;
-  background-color: #f5f5f5;
+}
+
+/* ===== RESPONSIVE ===== */
+
+@media (max-width: 900px) {
+  .calendar-page {
+    grid-template-columns: 1fr;
+  }
 }
