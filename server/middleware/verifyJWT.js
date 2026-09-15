@@ -16,7 +16,7 @@ const verifyJWT = (req, res, next) => {
     }
 
 
-    // ✅ Pick the correct field
+    // Pick the correct field
     const userId =
       decoded.id ||
       decoded.userId ||
